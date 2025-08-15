@@ -1,4 +1,9 @@
 ---
-
 name: modules
 version: master
+
+asciidoc:
+  attributes:
+    lab_name: "Service Administration Basics [Admin 101]"
+    release-version: master
+    page-pagination: true

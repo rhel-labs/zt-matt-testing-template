@@ -1,0 +1,62 @@
+=== What is a Service?
+
+The process you interacted with in the previous step was a foreground
+process. It ran in a terminal window where you could see it. Some
+processes run in the background, out of view of the user. These
+background processes allow the system to carry out many operations in
+parallel. Background processes that continuously carry out a set of
+actions are called _services_.
+
+_Daemons_ are even more specialized. These are services that and are
+specifically designed to supervise or support other processes.
+Typically, daemons are denoted by a *d* at the end of their name. For
+example, *firewalld* is the daemon which handles firewall functionality.
+These daemons lie in wait, listening for the user to issue a command to
+tell them to change their behavior.
+
+== Viewing the status of a service
+
+** The RHSM D-Bus service service provides the D-Bus API for interacting with subscription-manager. This service is executed on demand whenever a D-Bus method call to subscription-manager is performed, for example when using the Red Hat web console or the rhc Ansible system role. This service will exit on its own after a certain period of inactivity.
+
+Check the status of the *rhsm* service with the
+following command:
+
+.Command
+[source,bash,subs="+macros,+attributes",role=execute]
+----
+systemctl status rhsm.service --no-pager
+----
+
+.Output
+[source,text]
+----
+● rhsm.service - RHSM dbus service
+     Loaded: loaded (/usr/lib/systemd/system/rhsm.service; disabled; preset: disabled)
+     Active: active (running) since Fri 2025-06-13 14:59:44 EDT; 11min ago
+   Main PID: 5966 (rhsm-service)
+      Tasks: 2 (limit: 9956)
+     Memory: 34.5M
+        CPU: 802ms
+     CGroup: /system.slice/rhsm.service
+             └─5966 /usr/bin/python3 /usr/libexec/rhsm-service
+
+<< OUTPUT ABRIDGED >>
+----
+
+From this status message it is clear that the *rhsm* service is
+installed and active.
+
+But what is managing this service? It turns out
+that another service, *systemd*, is in charge of managing all of the
+services on the system.
+
+== *systemd* vs. *systemctl*
+
+When researching service management, you will come across two very
+similar terms: *systemd* and *systemctl*. These are very closely
+related. *systemd*, short for system daemon, manages the state of the
+system and any services running on it. Since *systemd* is a daemon, it
+runs in the background and needs a set of commands for users to interact
+with it. *systemctl* provides these commands. The `+systemctl status+`
+command above is one example of this, and the upcoming steps will walk
+you through starting and enabling a service with *systemctl*.
