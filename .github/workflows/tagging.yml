@@ -1,0 +1,19 @@
+name: On Release Published
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  tag:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Create Tag
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git tag -d prod
+          git push --delete origin prod
+          git tag -a prod "${{ github.event.release.tag_name }}"^{} -m "Release ${{ github.event.release.tag_name }} set as published"
+          git push origin prod
